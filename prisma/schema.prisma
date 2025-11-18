@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../lib/generated/prisma"
 }
 
 datasource db {
@@ -17,6 +16,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  projects      Project[]
 }
 
 model Account {
@@ -65,6 +65,8 @@ model Project {
   todos       Todo[]
   notes       Note[]
   scalitros   Scalitor[]
+  userId      String
+  owner User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Todo {

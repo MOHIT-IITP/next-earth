@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { createNotes } from '@/lib/action';
+import { createNotes, DeleteNote } from '@/lib/action';
 import { Plus } from 'lucide-react';
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
@@ -12,7 +12,7 @@ import Link from '@tiptap/extension-link'
 import Highlight from '@tiptap/extension-highlight'
 import { FaBold, FaCode, FaHighlighter, FaItalic, FaStrikethrough } from 'react-icons/fa';
 import { RiH1, RiH2, RiH3 } from "react-icons/ri";
-import { MdFormatListBulleted } from "react-icons/md";
+import { MdDelete, MdFormatListBulleted } from "react-icons/md";
 import { GoListOrdered } from "react-icons/go";
 
 const MenuBar = ({ editor }: { editor: any }) => {
@@ -201,9 +201,9 @@ const Notes = ({project}:{project:any}) => {
                 <button 
                     onClick={() => setPlugOpen(true)} 
                     aria-label="Create new note" 
-                    className="flex items-center justify-center gap-2 p-2 rounded bg-blue-500 text-white hover:bg-blue-600 transition"
+                    className="flex items-center justify-center gap-2 p-2 rounded-full bg-gray-500 text-white hover:bg-gray-900 transition"
                 >
-                    <Plus size={20} />
+                    <Plus size={15} />
                     <span>New Note</span>
                 </button>
                 <div className="flex-1 overflow-auto">
@@ -214,11 +214,14 @@ const Notes = ({project}:{project:any}) => {
                                     <li key={n.id ?? i}>
                                         <button
                                             onClick={() => setSelectedIndex(i)}
-                                            className={`w-full text-left p-3 rounded transition ${
+                                            className={`w-full text-left flex justify-between items-center p-3 rounded transition ${
 selectedIndex === i ? 'bg-blue-100 border-l-4 border-blue-500' : 'hover:bg-gray-100'
 }`}
                                         >
                                             <div className="font-medium truncate">{n.title}</div>
+                                            <button onClick={() => DeleteNote(n.id)}>
+                                                <MdDelete/>
+                                            </button>
                                         </button>
                                     </li>
                                 ))}

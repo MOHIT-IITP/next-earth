@@ -22,6 +22,7 @@
     "@tiptap/extension-color": "^3.11.1",
     "@tiptap/extension-highlight": "^3.11.1",
     "@tiptap/extension-link": "^3.11.1",
+    "@tiptap/extension-text-align": "^3.11.1",
     "@tiptap/extension-text-style": "^3.11.1",
     "@tiptap/react": "^3.11.1",
     "@tiptap/starter-kit": "^3.11.1",

@@ -1,10 +1,12 @@
 "use client"
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import Notes from './Notes';
 import Draw from './Draw';
 import Todo from './Todo';
 
-const Select = () => {
+
+const Select = ({project}:{project:any}) => {
+    console.log("this is my new project", project)
     const [selected, setSelected] = useState("Note");
   return (
     <div>
@@ -16,11 +18,10 @@ const Select = () => {
             ))}
         </div>
         <div className='w-full flex justify-center items-center '>
-            {selected === "Note" && <Notes/>}
+            {selected === "Note" && <Notes project={project}/>}
             {selected === "Draw" && <Draw/>}
             {selected === "Todo" && <Todo/>}
         </div>
-        <div></div>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 export const createNotes = async ({ formData }: { formData: any }) => {
   try {
-    const newNotes = await fetch(`/api/notes`, {
+    const newNotes = await fetch(`/api/note`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -17,20 +17,19 @@ export const createNotes = async ({ formData }: { formData: any }) => {
   }
 };
 
-
-export const fetchNotes = async ({ projectId }: { projectId: string }) => {
-  try {
-    const notes = await fetch(`/api/notes`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        projectId: projectId
-      }),
-    })
-  } catch (error) {
-    console.error("Error fetching notes", error);
-    return null;
-  }
-};
+export const updateNotes = async ({formData}: {formData : any}) => {
+    try {
+        const response = await fetch(`/api/notes/${formData.projectId}`, {
+            method: "PUT", 
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                title: formData.title,
+                content: formData.content,
+            }),
+        })
+        const data = "helo" + response;
+        return data;
+    } catch (error) {
+        console.error("Error in updating notes", error);
+    }
+}

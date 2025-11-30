@@ -27,3 +27,24 @@ export const DeleteNote = async (noteId: string) => {
         console.error("Error deleting nore:", err);
     }
 }
+
+
+
+
+export const updateNote = async (noteId: string, formData: any) => {
+  try {
+    const res = await fetch(`/api/note/${noteId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: formData.title,
+        content: formData.content,
+      }),
+    });
+
+    return await res.json();
+  } catch (error) {
+    console.error("Error updating notes", error);
+  }
+};
+

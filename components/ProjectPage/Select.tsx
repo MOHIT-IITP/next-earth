@@ -17,7 +17,7 @@ const Select = ({project}:{project:any}) => {
                 </button>
             ))}
         </div>
-        <div className='w-full flex justify-center items-center '>
+        <div className='min-w-3xl border border-gray-100  flex justify-center items-center '>
             {selected === "Note" && <Notes project={project}/>}
             {selected === "Draw" && <Draw/>}
             {selected === "Todo" && <Todo/>}

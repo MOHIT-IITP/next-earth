@@ -2,10 +2,10 @@
 import  { useState } from 'react'
 import Notes from './Notes';
 import Draw from './Draw';
-import Todo from './Todo';
+import { Todo } from './Todo';
 
 
-const Select = ({project}:{project:any}) => {
+const Select = ({project}:{project:object}) => {
     console.log("this is my new project", project)
     const [selected, setSelected] = useState("Note");
   return (
@@ -20,7 +20,7 @@ const Select = ({project}:{project:any}) => {
         <div className='min-w-3xl border border-gray-100  flex justify-center items-center '>
             {selected === "Note" && <Notes project={project}/>}
             {selected === "Draw" && <Draw/>}
-            {selected === "Todo" && <Todo/>}
+            {selected === "Todo" && <Todo project={project}/>}
         </div>
     </div>
   )

@@ -1,7 +1,7 @@
 import { RegisteredUser } from "./auth";
 import { prisma } from "./prisma";
 
-export const getProject = async ({ projectId }: { projectId: any }) => {
+export const getProject = async ({ projectId }: { projectId: string }) => {
     try {
         const session = await RegisteredUser();
         const data = await prisma.project.findUnique({

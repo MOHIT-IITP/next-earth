@@ -4,33 +4,17 @@ import React, { useEffect, useState } from "react";
 
 import TextAlign from "@tiptap/extension-text-align";
 import { usePathname } from "next/navigation";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
 import { createNotes, DeleteNote, updateNote } from "@/lib/action";
-import { Plus } from "lucide-react";
 import NotesSidebar from './NotesSidebar';
 import NoteEditor from './NoteEditor';
 import NoteViewer from './NoteViewer';
-import MenuBar from './NotesEditorMenuBar';
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { TextStyle } from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
 import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
-import {
-    FaAlignCenter,
-    FaAlignLeft,
-    FaAlignRight,
-    FaBold,
-    FaCode,
-    FaHighlighter,
-    FaItalic,
-    FaStrikethrough,
-} from "react-icons/fa";
-import { RiH1, RiH2, RiH3 } from "react-icons/ri";
-import { MdDelete, MdFormatListBulleted } from "react-icons/md";
-import { GoListOrdered } from "react-icons/go";
+import toast from "react-hot-toast";
 
 
 

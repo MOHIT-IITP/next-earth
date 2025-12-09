@@ -10,7 +10,7 @@ export default async function Home() {
 
             <div className="relative z-10 flex gap-10 flex-col items-center justify-center h-full w-full">
                 <h1 style={{ fontFamily: "cinzel" }} className="text-4xl dark:text-white text-black font-semibold text-center px-4">
-                    Ocean - Explore the <br /> Depths of Knowledge
+                    Ocean - Explore the <br /> Depths of Productivity 
                 </h1>
                 <div className='flex justify-center items-center gap-8'>
                     <Link href="/profile">

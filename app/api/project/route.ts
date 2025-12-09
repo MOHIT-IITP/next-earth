@@ -32,7 +32,7 @@ export async function POST(req: Request) {
         return NextResponse.json({project}, {status: 201});
     } catch (error) {
         return NextResponse.json({
-            error: "Server Error hai bhai",
+            error: "Error in creating new Project",
         }, {
             status: 500
         })
@@ -55,7 +55,6 @@ export async function GET(){
             orderBy: {
                 createdAt: "desc",
             },
-            take: 4,
         });
         return NextResponse.json({projects: latestProject});
     } catch (error) {
@@ -63,4 +62,33 @@ export async function GET(){
         return NextResponse.json({error: "Server error "}, {status: 500})
     }
 }
+
+// function to delete the project
+export async function  DELETE  (req:Request){
+    try {
+        const session = await auth();
+
+        if(!session || !session.user?.id){
+            return NextResponse.json({error: "unauthorized"},{ status: 401});
+        }
+
+        const {projectId}  =  await req.json();
+
+        const project  = await prisma.project.findUnique({
+            where: {id: projectId}
+        });
+        if(project){
+            await prisma.project.delete({
+                where: {id: projectId}
+            });
+        }
+
+        return NextResponse.json({message: "Project deleted successfully"},{status: 400})
+        
+    } catch (error) {
+        console.log("Error in deleting the project", error)
+        return NextResponse.json({error: "Server Error"},{status: 500})
+    }
+}
+
 

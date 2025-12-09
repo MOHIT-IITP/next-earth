@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import  { Toaster } from 'react-hot-toast';
 import { Geist, Geist_Mono, Michroma, Cinzel } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -50,6 +51,7 @@ export default function RootLayout({
                     <Navbar/>
                     {children}
 
+                    <Toaster/>
                 </ThemeProvider>
             </body>
         </html>

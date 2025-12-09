@@ -43,11 +43,20 @@ export default function CreateTodoDialog({ formData, setFormData }: { formData: 
     }));
   };
 
-  // works for <Select>
-  const handleSelect = (value: string) => {
+
+  // works for <Select> for status
+  const handleStatusSelect = (value: string) => {
     setFormData(prev => ({
       ...prev,
-      stack: value,
+      status: value,
+    }));
+  };
+
+  // works for <Select> for priority
+  const handlePrioritySelect = (value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      priority: value,
     }));
   };
 
@@ -74,23 +83,23 @@ export default function CreateTodoDialog({ formData, setFormData }: { formData: 
 
         <div className="flex flex-col gap-4 mt-4">
           
-          {/* Select field */}
-          <Select value={formData.status} onValueChange={handleSelect}>
+          {/* Select field for status */}
+          <Select value={formData.status} onValueChange={handleStatusSelect}>
             <SelectTrigger>
-              <SelectValue placeholder="Select tech stack" />
+              <SelectValue placeholder="Select status" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Status</SelectLabel>
                 <SelectItem value="TODO">TODO</SelectItem>
-                <SelectItem value="DOING">In Progress</SelectItem>
-                <SelectItem value="Done">Done</SelectItem>
+                <SelectItem value="DOING">DOING</SelectItem>
+                <SelectItem value="DONE">DONE</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
 
-          {/* select field for the priority */}
-          <Select value={formData.priority} onValueChange={handleSelect}>
+          {/* Select field for priority */}
+          <Select value={formData.priority} onValueChange={handlePrioritySelect}>
             <SelectTrigger>
               <SelectValue placeholder="Select priority" />
             </SelectTrigger>

@@ -1,27 +1,15 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-// GET a single todo by id
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, context: {params: Promise<{id: string}>}) {
 	try {
-		const todo = await prisma.todo.findUnique({
-			where: { id: params.id },
-		});
-		if (!todo) {
-			return NextResponse.json({ error: "Todo not found" }, { status: 404 });
+		const id = await context.params;
+		if(!id){
+			return NextResponse.json({error:"id is required"},{status: 400})
 		}
-		return NextResponse.json({ todo });
-	} catch (error) {
-		return NextResponse.json({ error: "Failed to fetch todo" }, { status: 500 });
-	}
-}
-
-// PATCH update a todo by id
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
-	try {
 		const body = await req.json();
 		const todo = await prisma.todo.update({
-			where: { id: params.id },
+			where: {id: id.id},
 			data: {
 				title: body.title,
 				description: body.description,
@@ -36,10 +24,14 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 }
 
 // DELETE a todo by id
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: Request, context: {params: Promise<{id: string}>}) {
 	try {
+		const id = await context.params;	
+		if(!id){
+			return NextResponse.json({error:"id is required"},{status: 400})
+		}	
 		await prisma.todo.delete({
-			where: { id: params.id },
+			where: { id: id.id },
 		});
 		return NextResponse.json({ success: true });
 	} catch (error) {

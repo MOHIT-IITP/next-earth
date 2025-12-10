@@ -1,4 +1,3 @@
-import { Description } from "@radix-ui/react-dialog";
 interface TodoFormDataProp {
   title: string,
   description: string,
@@ -116,13 +115,9 @@ export const createTodo = async (formData:TodoFormDataProp ) => {
 
 export const fetchAllTodo = async (projectId: string) => {
   try {
-    const res = await fetch(`/api/todo`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({projectId: projectId})
-    })
+    const res = await fetch(`/api/todo?projectId=${projectId}`);
     return await res.json();
   } catch (error) {
-    console.error("Error in getting Todo")
+    console.error("Error in getting Todo", error);
   }
 }

@@ -76,16 +76,16 @@ model Todo {
   title       String
   description String?
   status      TodoStatus @default(TODO)
-  priority    PriorityStatus  @default(Low)
+  priority    PriorityStatus  @default(LOW)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
   project     Project    @relation(fields: [projectId], references: [id])
 }
 enum PriorityStatus {
-  Low
-  Medium
-  High
+  LOW 
+  MEDIUM 
+  HIGH
 }
 
 enum TodoStatus {

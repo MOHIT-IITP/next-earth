@@ -2,7 +2,7 @@
 import  { useState } from 'react'
 import Notes from './Notes';
 import Draw from './Draw';
-import { Todo } from './Todo';
+import Todo from './Todo';
 
 
 const Select = ({project}:{project:object}) => {

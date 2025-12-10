@@ -1,3 +1,4 @@
+// TODO: dont call the server in each changes , try to gather some changes and then make server request , on clicking on some buttons , etc 
 import { useEffect, useState } from 'react';
 import { Plus, Trash2, Edit, Save, X } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -11,7 +12,6 @@ import {
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
-  closestCorners,
   useSensor,
   useSensors,
   PointerSensor,
@@ -69,50 +69,18 @@ const SortableTask = ({ task, onDelete, onChangePriority, isEditing, editTitle, 
       style={style}
       {...(!isEditing ? attributes : undefined)}
       {...(!isEditing ? listeners : undefined)}
-      className={`p-4 ${
-        isEditing
-          ? 'cursor-default bg-white border-black'
-          : `cursor-grab active:cursor-grabbing ${priorityBackground[task.priority]} border border-zinc-200`
+      className={`p-4 cursor-grab active:cursor-grabbing ${priorityBackground[task.priority]} border border-zinc-200
       } transition-all duration-200 hover:shadow-soft ${
         isDragging ? 'opacity-50 rotate-1 scale-105' : ''
       }`}
     >
       <div className="flex items-start justify-between mb-2">
-        {isEditing ? (
-          <Input
-            value={editTitle}
-            onChange={(e) => onChangeTitle && onChangeTitle(e.target.value)}
-            className="text-black bg-white border-black"
-            // onPointerDown={(e) => e.stopPropagation()}
-          />
-        ) : (
           <h4 className="font-medium text-black">{task.title}</h4>
-        )}
         <div className="flex items-center gap-2">
-          {isEditing ? (
-            <>
-              <button
-                aria-label="Save task"
-                className="text-black hover:text-foreground transition-colors"
-                onClick={(e) => { e.stopPropagation(); e.preventDefault(); if (onSaveEdit) onSaveEdit(); }}
-                // onPointerDown={(e) => e.stopPropagation()}
-              >
-                <Save className="w-4 h-4" />
-              </button>
-              <button
-                aria-label="Cancel edit"
-                className="text-black hover:text-foreground transition-colors"
-                onClick={(e) => { e.stopPropagation(); e.preventDefault(); if (onCancelEdit) onCancelEdit(); }}
-               >
-                <X className="w-4 h-4" />
-              </button>
-            </>
-          ) : (
-            <>
               {onStartEdit && (
                 <button
                   aria-label="Edit task"
-                  className="text-black hover:text-foreground transition-colors"
+                  className="text-black hover:text-red-600 transition-colors"
                   onClick={(e) => { e.stopPropagation(); e.preventDefault(); onStartEdit(task); }}
                   //onPointerDown={(e) => e.stopPropagation()}
                 >
@@ -133,23 +101,9 @@ const SortableTask = ({ task, onDelete, onChangePriority, isEditing, editTitle, 
                   <Trash2 className="w-4 h-4" />
                 </button>
               )}
-            </>
-          )}
         </div>
       </div>
-      {isEditing ? (
-        <Textarea
-          value={editDescription}
-          onChange={(e) => onChangeDescription && onChangeDescription(e.target.value)}
-          className="mb-3 text-black bg-white border-black"
-          onPointerDown={(e) => e.stopPropagation()}
-          placeholder="Description (optional)"
-        />
-      ) : (
-        task.description && (
-          <p className="text-sm text-black mb-3">{task.description}</p>
-        )
-      )}
+      <p className="text-lg text-black mb-3">{task.description}</p>
       <div className="flex items-center justify-between">
         {onChangePriority ? (
           <Select
@@ -157,11 +111,7 @@ const SortableTask = ({ task, onDelete, onChangePriority, isEditing, editTitle, 
             onValueChange={(val) => onChangePriority(task.id, val as Task['priority'])}
           >
             <SelectTrigger
-              className={`w-[120px] h-7 ${
-                isEditing
-                  ? 'bg-white text-black border border-black'
-                  : `${priorityColors[task.priority]} border-0`
-              }`}
+              className={`w-[120px] h-7`}
               onPointerDown={(e) => e.stopPropagation()}
             >
               <SelectValue placeholder="Priority" />

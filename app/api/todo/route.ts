@@ -1,8 +1,6 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-// DONE: make a todo 
-// DONE: fetch all todo 
 
 
 export async function POST(req: Request) {
@@ -50,11 +48,11 @@ export async function POST(req: Request) {
             return NextResponse.json({todo}, {status: 201});
         } catch (prismaError) {
             console.error("[TODO API] Prisma error:", prismaError);
-            return NextResponse.json({error: "Prisma error: " + (prismaError?.message || prismaError)}, {status:500});
+            return NextResponse.json({error: "Prisma error: ", prismaError  }, {status:500});
         }
     } catch (error) {
         console.error("[TODO API] Server error:", error);
-        return NextResponse.json({error: "Server error in creating todo: " + (error?.message || error)}, {status:500});
+        return NextResponse.json({error: "Server error in creating todo: " + (error)}, {status:500});
     }
 }
 

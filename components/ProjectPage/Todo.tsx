@@ -1,6 +1,6 @@
 // TODO: dont call the server in each changes , try to gather some changes and then make server request , on clicking on some buttons , etc 
 import { useEffect, useState } from 'react';
-import { Plus, Trash2, Edit, Save, X } from 'lucide-react';
+import { Plus, Trash2, Edit } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
@@ -26,6 +26,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { createTodo, fetchAllTodo } from '@/lib/action';
+import { Spinner } from '../ui/spinner';
 
 interface Task {
   id: string;
@@ -36,7 +37,7 @@ interface Task {
   createdAt: Date;
 }
 
-const SortableTask = ({ task, onDelete, onChangePriority, isEditing, editTitle, editDescription, onStartEdit, onChangeTitle, onChangeDescription, onSaveEdit, onCancelEdit }: { task: Task; onDelete?: (id: string) => void; onChangePriority?: (id: string, priority: Task['priority']) => void; isEditing?: boolean; editTitle?: string; editDescription?: string; onStartEdit?: (task: Task) => void; onChangeTitle?: (value: string) => void; onChangeDescription?: (value: string) => void; onSaveEdit?: () => void; onCancelEdit?: () => void; }) => {
+const SortableTask = ({ task, onDelete, onChangePriority, isEditing,  onStartEdit,  }: { task: Task; onDelete?: (id: string) => void; onChangePriority?: (id: string, priority: Task['priority']) => void; isEditing?: boolean; editTitle?: string; editDescription?: string; onStartEdit?: (task: Task) => void; onChangeTitle?: (value: string) => void; onChangeDescription?: (value: string) => void; onSaveEdit?: () => void; onCancelEdit?: () => void; }) => {
   const {
     attributes,
     listeners,
@@ -60,7 +61,7 @@ const SortableTask = ({ task, onDelete, onChangePriority, isEditing, editTitle, 
   const priorityBackground = {
     LOW: 'bg-green-50',
     MEDIUM: 'bg-blue-50',
-    HIGH: 'bg-violet-50',
+    HIGH: 'bg-red-50',
   } as const;
 
   return (
@@ -69,65 +70,63 @@ const SortableTask = ({ task, onDelete, onChangePriority, isEditing, editTitle, 
       style={style}
       {...(!isEditing ? attributes : undefined)}
       {...(!isEditing ? listeners : undefined)}
-      className={`p-4 cursor-grab active:cursor-grabbing ${priorityBackground[task.priority]} border border-zinc-200
-      } transition-all duration-200 hover:shadow-soft ${
-        isDragging ? 'opacity-50 rotate-1 scale-105' : ''
-      }`}
+      className={` rounded-2xl border-2 border-dashed bg-white font-semibold text-black transition-all duration-300 hover:translate-x-[-4px] hover:translate-y-[-4px] hover:rounded-md hover:shadow-[4px_4px_0px_black] active:translate-x-[0px] active:translate-y-[0px] active:rounded-2xl active:shadow-none px-4 py-2 min-h-[44px]  min-w-[150px] sm:min-w-[180px] border-gray-800 md:min-w-[210px] w-full max-w-full md:max-w-[600px] flex flex-col justify-center cursor-grab active:cursor-grabbing ${priorityBackground[task.priority]} transition-all duration-200 hover:shadow-soft ${isDragging ? 'opacity-50 rotate-1 scale-105' : ''}`}
     >
-      <div className="flex items-start justify-between mb-2">
-          <h4 className="font-medium text-black">{task.title}</h4>
-        <div className="flex items-center gap-2">
-              {onStartEdit && (
-                <button
-                  aria-label="Edit task"
-                  className="text-black hover:text-red-600 transition-colors"
-                  onClick={(e) => { e.stopPropagation(); e.preventDefault(); onStartEdit(task); }}
-                  //onPointerDown={(e) => e.stopPropagation()}
-                >
-                  <Edit className="w-4 h-4" />
-                </button>
-              )}
-              {onDelete && (
-                <button
-                  aria-label="Delete task"
-                  className="text-black hover:text-destructive transition-colors"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    onDelete(task.id);
-                  }}
-                  onPointerDown={(e) => e.stopPropagation()}
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              )}
+      <div className="flex items-start justify-between mb-1">
+        <h4 className="font-semibold text-sm text-black truncate">{task.title}</h4>
+        <div className="flex items-center gap-1">
+          {onStartEdit && (
+            <button
+              aria-label="Edit task"
+              className="text-black hover:text-red-600 transition-colors"
+              onClick={(e) => { e.stopPropagation(); e.preventDefault(); onStartEdit(task); }}
+            >
+              <Edit className="w-4 h-4" />
+            </button>
+          )}
+          {onDelete && (
+            <button
+              aria-label="Delete task"
+              className="text-black hover:text-destructive transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                onDelete(task.id);
+              }}
+              onPointerDown={(e) => e.stopPropagation()}
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
-      <p className="text-lg text-black mb-3">{task.description}</p>
-      <div className="flex items-center justify-between">
+      {task.description && (
+        <p className="text-xs text-black mb-1 truncate">{task.description}</p>
+      )}
+      <div className="flex items-center justify-between mt-1">
         {onChangePriority ? (
           <Select
             value={task.priority}
             onValueChange={(val) => onChangePriority(task.id, val as Task['priority'])}
           >
             <SelectTrigger
-              className={`w-[120px] h-7`}
+              className={`w-[90px] h-6 text-xs`}
               onPointerDown={(e) => e.stopPropagation()}
             >
               <SelectValue placeholder="Priority" />
             </SelectTrigger>
             <SelectContent onPointerDown={(e) => e.stopPropagation()}>
-              <SelectItem className='text-black' value="LOW">Low</SelectItem>
-              <SelectItem className='text-black' value="MEDIUM">Medium</SelectItem>
-              <SelectItem className='text-black' value="HIGH">High</SelectItem>
+              <SelectItem className='text-black text-xs' value="LOW">Low</SelectItem>
+              <SelectItem className='text-black text-xs' value="MEDIUM">Medium</SelectItem>
+              <SelectItem className='text-black text-xs' value="HIGH">High</SelectItem>
             </SelectContent>
           </Select>
         ) : (
-          <Badge className={priorityColors[task.priority]} variant="secondary">
+          <Badge className={priorityColors[task.priority] + ' text-xs px-2 py-0.5'} variant="secondary">
             {task.priority}
           </Badge>
         )}
-        <span className="text-xs text-black">
+        <span className="text-[10px] text-black">
           {task.createdAt.toLocaleDateString()}
         </span>
       </div>
@@ -167,7 +166,7 @@ const Todo = ({project}:{project: { id: string; todos?: Task[] }}) => {
         setTasks(mapped);
       }
     } catch (e) {
-      // handle error
+      console.log("Error in refreash todo  ", e)
     } finally {
       setIsLoading(false);
     }
@@ -351,11 +350,11 @@ const Todo = ({project}:{project: { id: string; todos?: Task[] }}) => {
     });
 
     return (
-      <div className={`flex-1 min-h-0 ${className}`}>
+      <div className={`flex-1 min-h-0 min-w-[250px] bg-transparent ${className}`}>
         <div className="mb-4">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-black">{title}</h3>
-            <Badge variant="secondary" className="text-xs text-black">
+            <h3 className="font-semibold uppercase text-black">{title}</h3>
+            <Badge variant="secondary" className="text-sm text-black">
               {tasks.length}
             </Badge>
           </div>
@@ -400,8 +399,8 @@ const Todo = ({project}:{project: { id: string; todos?: Task[] }}) => {
   // useEffect replaced above with refreshTodos on [project.id]
 
   return (
-    <div className="h-full p-6 rounded-xl  bg-white shadow-lg">
-      <div className="mb-6">
+    <div className="h-full p-6 rounded-xl">
+      <div className="mb-6 ">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold text-black mb-2">Todos</h2>
@@ -413,7 +412,7 @@ const Todo = ({project}:{project: { id: string; todos?: Task[] }}) => {
           </Button>
         </div>
         {isLoading && (
-          <div className="mt-4 text-sm text-black">Loading...</div>
+          <div className="mt-4 text-sm text-black flex justify-center items-center"> <Spinner/> </div>
         )}
         {isCreating && (
           <Card className="mt-4 p-4 bg-card/80 backdrop-blur-sm">

@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { redis } from "@/lib/redis";
 import { NextResponse } from "next/server";
 
 
@@ -73,6 +74,18 @@ export async function GET(req: Request) {
             orderBy: { createdAt: "desc" },
         });
         return NextResponse.json({ todo });
+        // const cached = await redis.hgetall(`todos:${projectId}`);
+        // if (cached) {
+        //     // console.log("returning the todo from cache");
+        //     return cached;
+        // } else {
+        //     const todo = await prisma.todo.findMany({
+        //         where: { projectId },
+        //         orderBy: { createdAt: "desc" },
+        //     });
+        //     await redis.set(`todos:${projectId}`, todo, { ex: 3600 });
+        //     return NextResponse.json({ todo });
+        // }
     } catch (error) {
         console.log("Error in fetching all the todo", error);
         return NextResponse.json({ error: "Error in getting latest todo" }, { status: 500 });

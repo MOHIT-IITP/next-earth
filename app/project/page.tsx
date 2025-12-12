@@ -25,12 +25,13 @@ import { AiTwotoneDelete } from "react-icons/ai";
 import { deleteProject } from "@/lib/action";
 import toast from "react-hot-toast";
 import UpdateDialog from "@/components/ProjectPage/UpdateDialog";
+import { getAllProject } from "@/lib/project";
 
 
 interface Project {
     id: string;
     name: string;
-    description: string;
+    description: string | null;
     stack: string;
     createdAt: string;
 }
@@ -47,12 +48,15 @@ export default function ProjectPage() {
 
     useEffect(()=>{
         const getProjects = async () => {
-            const res = await fetch("/api/project");
+            const res = await fetch("/api/project", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
             const data = await res.json();
-
-            if(res.ok){
-                setProjects(data.projects);
-            }
+            setLoading(true);
+            setProjects(data.projects);
             setLoading(false);
         };
         getProjects();

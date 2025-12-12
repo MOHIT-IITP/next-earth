@@ -8,17 +8,66 @@ import { createNotes, DeleteNote, updateNote } from "@/lib/action";
 import NotesSidebar from './NotesSidebar';
 import NoteEditor from './NoteEditor';
 import NoteViewer from './NoteViewer';
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor  } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { TextStyle } from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
 import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
-import toast from "react-hot-toast";
+
+export interface Todo {
+    id: string;
+    projectId: string;
+    title: string;
+    description: string | null;
+    status: "TODO" | "DOING" | "DONE";
+    priority: "LOW"|"MEDIUM"|"HIGH";
+    createdAt: string;
+    updatedAt: string;
+}
+export interface Scalitor {
+    id: string;
+    projectId: string;
+    title: string;
+    diagramJson: any;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface Note {
+    id: string;
+    projectId: string;
+    title: string;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+}
+export interface User {
+  id: string;
+  name?: string | null;
+  email?: string | null;
+  emailVerified?: string | null;
+  image?: string | null;
+
+  projects: Project[];
+}
+
+export interface Project {
+    id: string;
+    name : string;
+    description: string;
+    stack?: string;
+    createdAt: string;
+    updatedAt: string;
+    userId: string;
+    todos: Todo[];
+    notes: Note[];
+    scalitros: Scalitor[];
+    owner:User;
+}
 
 
-
-const Notes = ({ project }: { project: any }) => {
+const Notes = ({ project }: { project: Project }) => {
     const pth = usePathname();
     const proId = pth.split("/")[2];
 

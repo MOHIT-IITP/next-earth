@@ -6,7 +6,7 @@ import Todo from './Todo';
 
 
 const Select = ({project}:{project:object}) => {
-    console.log("this is my new project", project)
+    // console.log("this is my new project", project)
     const [selected, setSelected] = useState("Note");
   return (
     <div>

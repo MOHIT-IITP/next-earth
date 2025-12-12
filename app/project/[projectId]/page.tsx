@@ -1,9 +1,9 @@
 import Select  from '@/components/ProjectPage/Select';
-import { getProject } from '@/lib/project';
+import {  getSingleProject } from '@/lib/project';
 
 const page = async ({ params }: { params: Promise<{ projectId: string }> }) => {
   const proId = (await params).projectId;
-  const project = await getProject({ projectId: proId });
+  const project = await getSingleProject({ projectId: proId });
   console.log("project is ", project);
 
   const projectTitle =

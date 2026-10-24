@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Earth Color Palette - Light Mode (Warm Ivory & Cream Dominant) */
+    --earth-ivory: 43 45% 97%;         /* #FAF7F2 warm ivory base */
+    --earth-cream: 38 35% 92%;         /* #F3EDE2 rich cream surface */
+    --earth-sand: 35 25% 86%;          /* #E8DFC8 soft sand border/subtle */
+    --earth-terracotta: 14 62% 48%;    /* #C55331 earthy terracotta */
+    --earth-terracotta-light: 14 65% 93%; /* #F8EBE7 soft terracotta tint */
+    --earth-terracotta-dark: 14 68% 36%;  /* #98381D deep terracotta */
+    --olive: 96 24% 38%;               /* #556B42 organic olive */
+    --earth-olive: 96 24% 38%;
+    --earth-olive-light: 96 28% 91%;   /* #ECF0E7 soft olive tint */
+    --earth-olive-dark: 96 26% 26%;    /* #3B4A2E deep olive */
+    --charcoal: 220 14% 16%;           /* #23272E warm charcoal */
+    --earth-charcoal: 220 14% 16%;
+    --earth-charcoal-light: 220 10% 28%;/* #3F444E */
+    --earth-charcoal-deep: 220 18% 10%; /* #14171C */
+
+    /* Semantic UI Tokens - Light */
+    --background: var(--earth-ivory);
+    --foreground: var(--earth-charcoal);
+
+    --card: 38 40% 98%;
+    --card-foreground: var(--earth-charcoal);
+
+    --popover: 38 40% 98%;
+    --popover-foreground: var(--earth-charcoal);
+
+    --primary: var(--earth-terracotta);
+    --primary-foreground: 43 45% 97%;
+
+    --secondary: 96 24% 38%;
+    --secondary-foreground: 43 45% 97%;
+
+    --muted: 36 28% 91%;
+    --muted-foreground: 30 10% 42%;
+
+    --accent: 38 30% 89%;
+    --accent-foreground: var(--earth-charcoal);
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 35 22% 84%;
+    --input: 35 22% 84%;
+    --ring: 14 62% 48%;
+
+    --radius: 0.625rem;
+  }
+
+  .dark {
+    /* Earth Color Palette - Dark Mode (Warm Charcoal Dominant) */
+    --background: 220 16% 11%;         /* #16191F deep warm charcoal */
+    --foreground: 40 30% 93%;          /* #F1EEE7 soft ivory foreground */
+
+    --card: 220 15% 15%;               /* #1E232B raised card surface */
+    --card-foreground: 40 30% 93%;
+
+    --popover: 220 15% 15%;
+    --popover-foreground: 40 30% 93%;
+
+    --primary: 15 65% 58%;             /* warm vibrant terracotta in dark */
+    --primary-foreground: 220 18% 10%;
+
+    --secondary: 96 30% 50%;           /* luminous olive */
+    --secondary-foreground: 220 18% 10%;
+
+    --muted: 220 12% 20%;
+    --muted-foreground: 38 15% 68%;
+
+    --accent: 220 12% 22%;
+    --accent-foreground: 40 30% 93%;
+
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 12% 22%;
+    --input: 220 12% 22%;
+    --ring: 15 65% 58%;
+
+    --earth-ivory: 40 30% 93%;
+    --earth-cream: 36 20% 80%;
+    --earth-sand: 220 12% 24%;
+    --earth-terracotta: 15 65% 58%;
+    --earth-terracotta-light: 15 45% 20%;
+    --earth-terracotta-dark: 15 70% 68%;
+    --earth-olive: 96 30% 50%;
+    --earth-olive-light: 96 25% 20%;
+    --earth-olive-dark: 96 35% 62%;
+    --earth-charcoal: 40 30% 93%;
+    --earth-charcoal-light: 220 12% 24%;
+    --earth-charcoal-deep: 220 16% 11%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    color-scheme: light dark;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Accessibility: Visible, high-contrast focus styling */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+/* Accessibility: Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom Scrollbar for Earth aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.4);
+}
